@@ -15,3 +15,7 @@
 
 ![Demo](docs/demo.png)
 
+Чтобы запустить процесс, необходимо сделать GET запрос
+````
+curl -L -X GET 'localhost:8080/start'
+````
