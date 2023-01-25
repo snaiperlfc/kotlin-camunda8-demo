@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0jx1jdi" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.7.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+  <bpmn:process id="test-process" name="test-process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Начало">
+      <bpmn:outgoing>Flow_09txhw7</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_09txhw7" sourceRef="StartEvent_1" targetRef="Activity_1yfjd8e" />
+    <bpmn:serviceTask id="Activity_1yfjd8e" name="Получить время по REST">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="get-time" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_09txhw7</bpmn:incoming>
+      <bpmn:outgoing>Flow_017rksx</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1lr5dmy" name="Сколько времени?" default="Flow_1ioqcwz">
+      <bpmn:incoming>Flow_017rksx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1uhpgrs</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ioqcwz</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_017rksx" sourceRef="Activity_1yfjd8e" targetRef="Gateway_1lr5dmy" />
+    <bpmn:sequenceFlow id="Flow_1uhpgrs" sourceRef="Gateway_1lr5dmy" targetRef="Activity_0778cyx">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=time.hour &gt;=0 and time.hour &lt;=11</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ioqcwz" sourceRef="Gateway_1lr5dmy" targetRef="Activity_1dx3yk0" />
+    <bpmn:endEvent id="Event_1h9y471">
+      <bpmn:incoming>Flow_1707uu4</bpmn:incoming>
+      <bpmn:incoming>Flow_0vip1wa</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1707uu4" sourceRef="Activity_1dx3yk0" targetRef="Event_1h9y471" />
+    <bpmn:sequenceFlow id="Flow_0vip1wa" sourceRef="Activity_0778cyx" targetRef="Event_1h9y471" />
+    <bpmn:serviceTask id="Activity_1dx3yk0" name="После полудня">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="make-greeting" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ioqcwz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1707uu4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0778cyx" name="До полудня">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="make-greeting" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1uhpgrs</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vip1wa</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test-process">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="161" y="165" width="39" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18qeyer_di" bpmnElement="Activity_1yfjd8e">
+        <dc:Bounds x="250" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1lr5dmy_di" bpmnElement="Gateway_1lr5dmy" isMarkerVisible="true">
+        <dc:Bounds x="405" y="115" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="405" y="85" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1h9y471_di" bpmnElement="Event_1h9y471">
+        <dc:Bounds x="772" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qmbfwm_di" bpmnElement="Activity_1dx3yk0">
+        <dc:Bounds x="510" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13e3w4d_di" bpmnElement="Activity_0778cyx">
+        <dc:Bounds x="510" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_09txhw7_di" bpmnElement="Flow_09txhw7">
+        <di:waypoint x="198" y="140" />
+        <di:waypoint x="250" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_017rksx_di" bpmnElement="Flow_017rksx">
+        <di:waypoint x="350" y="140" />
+        <di:waypoint x="405" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1uhpgrs_di" bpmnElement="Flow_1uhpgrs">
+        <di:waypoint x="455" y="140" />
+        <di:waypoint x="510" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ioqcwz_di" bpmnElement="Flow_1ioqcwz">
+        <di:waypoint x="430" y="165" />
+        <di:waypoint x="430" y="250" />
+        <di:waypoint x="510" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1707uu4_di" bpmnElement="Flow_1707uu4">
+        <di:waypoint x="610" y="250" />
+        <di:waypoint x="690" y="250" />
+        <di:waypoint x="690" y="200" />
+        <di:waypoint x="772" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vip1wa_di" bpmnElement="Flow_0vip1wa">
+        <di:waypoint x="610" y="140" />
+        <di:waypoint x="690" y="140" />
+        <di:waypoint x="690" y="200" />
+        <di:waypoint x="772" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
